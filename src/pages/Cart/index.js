@@ -13,8 +13,8 @@ class Cart extends Component {
         <div className={classes.total}>
           <table>
             <tr>
-              <td className={classes.title}>Tax: 21%:</td>
-              <td className={classes.value}>$42.00</td>
+              <td>Tax: 21%:</td>
+              <td>$42.00</td>
             </tr>
             <tr>
               <td>Quantity:</td>
