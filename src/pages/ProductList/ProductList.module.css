@@ -1,0 +1,10 @@
+.container {
+  margin-top: 3rem;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-left: 0;
+}

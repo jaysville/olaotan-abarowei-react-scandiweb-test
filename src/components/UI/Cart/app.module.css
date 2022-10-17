@@ -1,0 +1,85 @@
+.item {
+  list-style-type: none;
+  border-top: 1px solid white;
+  display: flex;
+  justify-content: space-between;
+  transform: scale(0.9);
+  padding-top: 0.5em;
+  width: 100%;
+  object-fit: cover;
+}
+
+.item .last {
+  display: flex;
+  width: 50%;
+}
+.item img {
+  width: 121px;
+  height: 100%;
+}
+.item .first {
+  font-family: "Raleway";
+  font-style: normal;
+  line-height: 27px;
+  color: #1d1f22;
+  width: 50%;
+}
+.item .first div {
+  margin-top: 0.5rem;
+}
+.item strong {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #1d1f22;
+  margin-top: 10px;
+}
+
+.item h2 {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 18px;
+  color: #1d1f22;
+  margin-top: 10px;
+}
+.item .size div {
+  display: flex;
+}
+
+.item .size button {
+  width: 45px;
+  height: 45px;
+  border: 1px solid #1d1f22;
+  background-color: white;
+  margin-right: 8px;
+}
+
+.item .color button {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+}
+
+.item .actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 1em;
+}
+
+.item .actions button {
+  height: 40px;
+  width: 40px;
+  background-color: white;
+  border: 1px solid;
+  font-size: 20px;
+}
+.item .actions span {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 160%;
+}
