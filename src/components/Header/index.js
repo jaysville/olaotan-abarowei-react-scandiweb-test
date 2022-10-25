@@ -7,6 +7,11 @@ import {
   CurrencyArrowUp,
 } from "../UI/svgs";
 import classes from "./Header.module.css";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { changeCurrency } from "../../redux/slices/appSlice";
+import { GET_CURRENCIES } from "../../utils/queries";
+import { graphql } from "@apollo/client/react/hoc";
 
 class Header extends Component {
   constructor() {
@@ -19,7 +24,6 @@ class Header extends Component {
       showCartDropdown: false,
       showCurrencyDropdown: !this.state.showCurrencyDropdown,
     });
-    console.log(this.state);
   }
 
   toggleCartDropDown() {
@@ -28,14 +32,43 @@ class Header extends Component {
       showCartDropdown: !this.state.showCartDropdown,
     });
   }
+
+  componentDidUpdate() {
+    console.log(this.props);
+  }
   render() {
+    const {
+      categories,
+      activeCategory,
+      setActiveCategory,
+      currency,
+      changeCurrency,
+    } = this.props;
+
     return (
       <header>
         <nav className={classes.nav}>
           <ul className={classes.categories}>
-            <li>WOMEN</li>
-            <li>MEN</li>
-            <li>KIDS</li>
+            {categories?.map((category, i) => {
+              return (
+                <Link
+                  key={i}
+                  to="/"
+                  style={{ textDecoration: "none", color: "black" }}
+                  onClick={() => {
+                    setActiveCategory(category);
+                  }}
+                >
+                  <li
+                    className={
+                      activeCategory === category ? classes.activeCategory : ""
+                    }
+                  >
+                    {category.toUpperCase()}
+                  </li>
+                </Link>
+              );
+            })}
           </ul>
           <span className={classes.bag}>{GreenBag}</span>
           <div style={{ display: "flex" }}>
@@ -45,7 +78,8 @@ class Header extends Component {
                 style={{ marginRight: "1em" }}
               >
                 <strong>
-                  ${" "}
+                  {currency}
+                  {"   "}
                   {this.state.showCurrencyDropdown
                     ? CurrencyArrowUp
                     : CurrencyArrowDown}
@@ -61,12 +95,35 @@ class Header extends Component {
 
             {this.state.showCurrencyDropdown && (
               <ul className={classes["currency-dropdown"]}>
-                <li>$ USD</li>
-                <li>&euro; EUR </li>
-                <li>&yen; JPY</li>
+                {!this.props.data.loading &&
+                  this.props.data?.currencies?.map((currency, i) => {
+                    return (
+                      <li
+                        key={i}
+                        onClick={() => {
+                          changeCurrency(currency.symbol);
+                          this.setState({
+                            ...this.state,
+                            showCurrencyDropdown: false,
+                          });
+                        }}
+                        className={
+                          this.props.currency === currency.symbol
+                            ? classes.activeCurrency
+                            : ""
+                        }
+                      >
+                        {currency.symbol} {currency.label}
+                      </li>
+                    );
+                  })}
               </ul>
             )}
-            {this.state.showCartDropdown && <CartDropdown />}
+            {this.state.showCartDropdown && (
+              <CartDropdown
+                toggleCartDropDown={this.toggleCartDropDown.bind(this)}
+              />
+            )}
           </div>
         </nav>
       </header>
@@ -74,4 +131,21 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    currency: state.app.currency,
+    cartCount: state.app.cartCount,
+  };
+};
+
+const matchDispatchToProps = (dispatch) => {
+  return {
+    changeCurrency: (symbol) => {
+      dispatch(changeCurrency(symbol));
+    },
+  };
+};
+
+export default graphql(GET_CURRENCIES)(
+  connect(mapStateToProps, matchDispatchToProps)(Header)
+);

@@ -9,6 +9,11 @@
   transform: scale(0.9);
 }
 
+.item img {
+  width: 334px;
+  height: 300px;
+}
+
 .item p {
   font-weight: 300;
   font-size: 22px;
@@ -18,15 +23,12 @@
 
 .btn {
   position: absolute;
-  bottom: 12%;
+  bottom: 16%;
   right: 6%;
   display: none;
 }
 
 .show {
   display: block;
-}
-
-.item:hover {
   box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
 }

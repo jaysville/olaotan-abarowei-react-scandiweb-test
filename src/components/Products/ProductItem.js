@@ -1,37 +1,71 @@
 import { Component } from "react";
 import classes from "./ProductItem.module.css";
-import dummy from "../../assets/dummy.png";
 import { ProductCartBtn } from "../UI/svgs";
+
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class ProductItem extends Component {
   constructor() {
     super();
-    this.state = { showButton: false };
+    this.state = { inCart: false };
+  }
+  handleCartItem(id, data, isInCart) {
+    if (!isInCart) {
+      this.props.addToCart(data);
+      this.setState({ inCart: !this.state.inCart });
+    } else {
+      this.props.removeFromCart(id);
+    }
   }
 
-  showButtonHandler() {
-    this.setState({ showButton: true });
-  }
-  hideButtonHandler() {
-    this.setState({ showButton: false });
-  }
   render() {
+    const { product, currency, cartItemIds } = this.props;
+    const { id, name, brand, gallery, prices } = product;
+
+    const actualPrice = prices.find(
+      (price) => price.currency.symbol === currency
+    );
+    if (cartItemIds.includes(id)) {
+      this.setState({ ...this.state, inCart: true });
+    }
+
     return (
-      <li
-        className={classes.item}
-        onMouseEnter={this.showButtonHandler.bind(this)}
-        onMouseLeave={this.hideButtonHandler.bind(this)}
-      >
-        <img src={dummy} alt="item" />
+      <li className={classes.item}>
+        <img src={gallery[0]} alt="item" />
+
         <span
-          className={`${classes.btn} ${this.state.showButton && classes.show}`}
+          className={`${classes.btn} ${this.state.inCart && classes.show}`}
+          onClick={() => {
+            this.handleCartItem(
+              id,
+              {
+                ...product,
+                id: product.id,
+                quantity: 1,
+                selected: {},
+              },
+              cartItemIds.includes(product.id)
+            );
+          }}
         >
-          {ProductCartBtn}
+          <Link to="#">{ProductCartBtn}</Link>
         </span>
-        <p>Apollo Running Short</p>
-        <strong>$50.00</strong>
+        <p>
+          {brand} {name}
+        </p>
+        <strong>
+          {currency} {actualPrice?.amount.toFixed(2).toLocaleString()}
+        </strong>
       </li>
     );
   }
 }
-export default ProductItem;
+
+const mapStateToProps = (state) => {
+  return {
+    cartItemIds: state.app.cartItemIds,
+  };
+};
+
+export default connect(mapStateToProps)(ProductItem);

@@ -5,9 +5,11 @@ import classes from "./CartDropdown.module.css";
 
 class CartDropdown extends Component {
   render() {
+    const { toggleCartDropDown } = this.props;
+
     return (
       <>
-        <Backdrop />
+        <Backdrop onClick={toggleCartDropDown} />
         <div className={classes.dropdown}>
           <p style={{ marginLeft: "1em" }}>
             <b>My Bag</b> , <em>3 items</em>

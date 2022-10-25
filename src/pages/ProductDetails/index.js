@@ -1,80 +1,134 @@
 import { Component } from "react";
 import classes from "./ProductDetails.module.css";
-import DummyProducts from "../../dummy-products";
+import parse from "html-react-parser";
+import { graphql } from "@apollo/client/react/hoc";
+import { withRouter } from "../../utils/helpers";
+import { GET_PRODUCT_DETAILS } from "../../utils/queries";
+import { connect } from "react-redux";
 
 class ProductDetails extends Component {
   constructor() {
     super();
-    this.state = { largeImageSrc: null };
+    this.state = { largeImageSrc: "" };
   }
 
   handleLargeImageSrc(src) {
-    this.setState({ largeImageSrc: src });
     console.log(this.state);
+    this.setState({ largeImageSrc: src });
   }
 
   render() {
-    return (
-      <div className={classes.container}>
-        <div className={classes.images}>
-          <div>
-            {DummyProducts.map(({ src }, i) => {
-              return (
-                <img
-                  key={i}
-                  src={src}
-                  alt="poster"
-                  className={classes["small-img"]}
-                  onClick={this.handleLargeImageSrc.bind(this, src)}
-                />
-              );
-            })}
-          </div>
-          <div>
-            <img
-              src={this.state.largeImageSrc}
-              alt=""
-              className={classes["lg-img"]}
-            />
-          </div>
-        </div>
-        <div className={classes.details}>
-          <div className={classes.title}>
-            <h1>Apollo</h1>
-            <h5>Running Short</h5>
-          </div>
-          <div className={classes.size}>
-            <h2>SIZE</h2>
+    const { data, currency } = this.props;
+    let content;
+    if (data.loading) {
+      content = <p>Loading</p>;
+    }
+    if (!data.loading) {
+      console.log(data.product);
+      const { name, brand, attributes, description, prices } = data.product;
+      const actualPrice = prices.find(
+        (price) => price.currency.symbol === currency
+      );
+
+      content = (
+        <div className={classes.container}>
+          <div className={classes.images}>
+            <div className={classes["sm-img-container"]}>
+              {this.props.data?.product?.gallery?.map((src, i) => {
+                return (
+                  <img
+                    key={i}
+                    src={src}
+                    alt="poster"
+                    className={`${classes["small-img"]} ${
+                      this.state.largeImageSrc === src
+                        ? classes.activeImage
+                        : ""
+                    }`}
+                    onClick={this.handleLargeImageSrc.bind(this, src)}
+                  />
+                );
+              })}
+            </div>
             <div>
-              <button>XS</button>
-              <button>S</button>
-              <button>M</button>
-              <button>L</button>
+              <img
+                src={this.state.largeImageSrc || data?.product?.gallery[0]}
+                alt=""
+                className={classes["lg-img"]}
+              />
             </div>
           </div>
-          <div className={classes.colors}>
-            <h2>COLOR</h2>
-            <button></button>
-            <button></button>
-            <button></button>
-          </div>
-          <div>
-            <h2>PRICE</h2>
-            <strong>$50.00</strong>
-          </div>
+          <div className={classes.details}>
+            <div className={classes.title}>
+              <h1>{name}</h1>
+              <h5>{brand}</h5>
+            </div>
+            {attributes.map((attribute) => {
+              return (
+                <>
+                  {attribute.id === "Color" && (
+                    <div className={classes.colors} key="color">
+                      <h2>COLOR:</h2>
+                      {attribute.items.map((item, i) => {
+                        return (
+                          <button
+                            key={i}
+                            style={{
+                              backgroundColor: `${item.value}`,
+                              border: "none",
+                            }}
+                          ></button>
+                        );
+                      })}
+                    </div>
+                  )}
+                  {attribute.id === "Size" && (
+                    <div className={classes.size} key="size">
+                      <h2>SIZE:</h2>
+                      <div>
+                        {attribute.items.map((item, i) => {
+                          return <button key={i}>{item.value}</button>;
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </>
+              );
+            })}
 
-          <div>
-            <button className={classes.btn}>Add To Cart</button>
+            <div>
+              <h2>PRICE:</h2>
+              <strong>
+                {currency}
+                {actualPrice?.amount.toFixed(2)}
+              </strong>
+            </div>
+
+            <div>
+              <button className={classes.btn}>Add To Cart</button>
+            </div>
+            <article>{parse(description)}</article>
           </div>
-          <article>
-            Find stunning women's cocktail dresses and party dresses. Stand out
-            in lace and metallic cocktail dresses and party dresses from all
-            your favorite brands.
-          </article>
         </div>
-      </div>
-    );
+      );
+    }
+    return <>{content}</>;
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    currency: state.app.currency,
+  };
+};
 
-export default ProductDetails;
+export default connect(mapStateToProps)(
+  withRouter(
+    graphql(GET_PRODUCT_DETAILS, {
+      options: (props) => ({
+        variables: {
+          product_id: props.router.params.id,
+        },
+      }),
+    })(ProductDetails)
+  )
+);

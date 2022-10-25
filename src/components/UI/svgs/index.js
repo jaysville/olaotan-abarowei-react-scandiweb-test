@@ -102,9 +102,9 @@ export const ProductCartBtn = (
         width="74"
         height="74"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feColorMatrix
           in="SourceAlpha"
           type="matrix"
@@ -144,8 +144,8 @@ export const CurrencyArrowDown = (
     <path
       d="M1 0.5L4 3.5L7 0.5"
       stroke="black"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -161,8 +161,8 @@ export const CurrencyArrowUp = (
     <path
       d="M1 3.5L4 0.5L7 3.5"
       stroke="black"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

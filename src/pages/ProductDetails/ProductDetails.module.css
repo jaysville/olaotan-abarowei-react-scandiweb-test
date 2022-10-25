@@ -1,7 +1,7 @@
 .container {
   display: flex;
   margin-top: 1rem;
-  padding: 2rem;
+  padding: 2rem 3rem;
 }
 
 .container .images {
@@ -9,6 +9,9 @@
   width: 90%;
 }
 
+.sm-img-container {
+  overflow-x: auto;
+}
 .small-img {
   width: 80px;
   height: 80px;
@@ -17,6 +20,9 @@
   margin-right: 30px;
 }
 
+.activeImage {
+  border: 2px solid rgb(139, 147, 154);
+}
 .lg-img {
   width: 100%;
   height: 400px;
@@ -24,17 +30,20 @@
 
 .title {
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .title h1 {
   font-weight: 600;
-  font-size: 30px;
+  font-size: 20px;
   line-height: 27px;
+  /* margin-bottom: -1rem; */
 }
 
 .title h5 {
   font-weight: 400;
-  font-size: 30px;
+  font-size: 20px;
   line-height: 27px;
   margin-bottom: 10px;
 }
@@ -42,6 +51,8 @@
 .details {
   display: flex;
   flex-direction: column;
+  width: 80%;
+  padding: auto;
 }
 
 .details div {
@@ -101,8 +112,9 @@
     flex-direction: column;
     align-items: center;
   }
+
   .details {
-    padding-left: 0;
+    padding: auto 1rem;
   }
 }
 

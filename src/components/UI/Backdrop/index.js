@@ -7,7 +7,12 @@ const portalElement = document.getElementById("backdrop");
 class Backdrop extends Component {
   render() {
     return (
-      <>{createPortal(<div className={classes.backdrop} />, portalElement)}</>
+      <>
+        {createPortal(
+          <div className={classes.backdrop} onClick={this.props.onClick} />,
+          portalElement
+        )}
+      </>
     );
   }
 }
