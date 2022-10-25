@@ -99,8 +99,7 @@ class ProductDetails extends Component {
             <div>
               <h2>PRICE:</h2>
               <strong>
-                {currency}
-                {actualPrice?.amount.toFixed(2)}
+                {currency} {actualPrice?.amount.toFixed(2)}
               </strong>
             </div>
 

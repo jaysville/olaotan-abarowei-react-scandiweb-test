@@ -10,3 +10,18 @@
   gap: 20px;
   padding-left: 0;
 }
+
+@media (max-width: 1200px) {
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 795px) {
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+}

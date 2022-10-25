@@ -1,22 +1,19 @@
 import { Component } from "react";
 import classes from "./ProductItem.module.css";
 import { ProductCartBtn } from "../UI/svgs";
-
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 class ProductItem extends Component {
   constructor() {
     super();
-    this.state = { inCart: false };
+    this.state = { showButton: false };
   }
-  handleCartItem(id, data, isInCart) {
-    if (!isInCart) {
-      this.props.addToCart(data);
-      this.setState({ inCart: !this.state.inCart });
-    } else {
-      this.props.removeFromCart(id);
-    }
+
+  showButtonHandler() {
+    this.setState({ showButton: true });
+  }
+  hideButtonHandler() {
+    this.setState({ showButton: false });
   }
 
   render() {
@@ -26,30 +23,19 @@ class ProductItem extends Component {
     const actualPrice = prices.find(
       (price) => price.currency.symbol === currency
     );
-    if (cartItemIds.includes(id)) {
-      this.setState({ ...this.state, inCart: true });
-    }
 
     return (
-      <li className={classes.item}>
+      <li
+        className={classes.item}
+        onMouseEnter={this.showButtonHandler.bind(this)}
+        onMouseLeave={this.hideButtonHandler.bind(this)}
+      >
         <img src={gallery[0]} alt="item" />
 
         <span
-          className={`${classes.btn} ${this.state.inCart && classes.show}`}
-          onClick={() => {
-            this.handleCartItem(
-              id,
-              {
-                ...product,
-                id: product.id,
-                quantity: 1,
-                selected: {},
-              },
-              cartItemIds.includes(product.id)
-            );
-          }}
+          className={`${classes.btn} ${this.state.showButton && classes.show}`}
         >
-          <Link to="#">{ProductCartBtn}</Link>
+          {ProductCartBtn}
         </span>
         <p>
           {brand} {name}
