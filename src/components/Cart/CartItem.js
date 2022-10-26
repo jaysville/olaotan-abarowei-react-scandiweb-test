@@ -4,11 +4,12 @@ import dummy from "../../assets/dummy.png";
 
 class CartItem extends Component {
   render() {
+    const { item } = this.props;
     return (
       <li className={classes.item}>
         <div className={classes.container}>
           <div className={classes.first}>
-            <strong>Apollo</strong>
+            <strong>{item.name}</strong>
             <p>Running Short</p>
             <strong>$ 50.00</strong>
             <div className={classes.size}>

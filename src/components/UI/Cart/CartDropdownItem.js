@@ -4,12 +4,18 @@ import dummy from "../../../assets/dummy.png";
 
 class CartDropdownItem extends Component {
   render() {
+    const { item, currency } = this.props;
+    const actualPrice = item.prices.find(
+      (price) => price.currency.symbol === currency
+    );
     return (
       <li className={classes.item}>
         <div className={classes.first}>
-          <strong>Apollo</strong>
-          <p>Running Short</p>
-          <strong>$ 50.00</strong>
+          <strong>{item.brand}</strong>
+          <p>{item.name}</p>
+          <strong>
+            {currency} {actualPrice.amount.toFixed(2)}
+          </strong>
           <div className={classes.size}>
             <h2>SIZE:</h2>
             <div>
@@ -32,7 +38,7 @@ class CartDropdownItem extends Component {
             <span style={{ textAlign: "center", fontWeight: 500 }}>1</span>
             <button>-</button>
           </div>
-          <img src={dummy} alt="poster" />
+          <img src={item.gallery[0]} alt="poster" />
         </div>
       </li>
     );

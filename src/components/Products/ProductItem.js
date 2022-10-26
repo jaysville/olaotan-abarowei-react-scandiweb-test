@@ -2,18 +2,29 @@ import { Component } from "react";
 import classes from "./ProductItem.module.css";
 import { ProductCartBtn } from "../UI/svgs";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 class ProductItem extends Component {
   constructor() {
     super();
-    this.state = { showButton: false };
+    this.state = { showButton: false, addedToCart: false };
   }
 
   showButtonHandler() {
-    this.setState({ showButton: true });
+    this.setState({ ...this.state, showButton: true });
   }
   hideButtonHandler() {
-    this.setState({ showButton: false });
+    this.setState({ ...this.state, showButton: false });
+  }
+
+  cartItemHandler(id, data, inCart) {
+    if (inCart) {
+      this.props.removeFromCart(id);
+      this.setState({ ...this.state, addedToCart: false });
+    } else {
+      this.props.addToCart(data);
+      this.setState({ ...this.state, addedToCart: true });
+    }
   }
 
   render() {
@@ -26,17 +37,34 @@ class ProductItem extends Component {
 
     return (
       <li
-        className={classes.item}
+        className={`${classes.item} ${this.state.addedToCart && classes.added}`}
         onMouseEnter={this.showButtonHandler.bind(this)}
         onMouseLeave={this.hideButtonHandler.bind(this)}
       >
         <img src={gallery[0]} alt="item" />
+        <object>
+          <Link to="#">
+            <span
+              onClick={() => {
+                this.cartItemHandler(
+                  id,
+                  {
+                    ...product,
+                    quantity: 1,
+                    selected: {},
+                  },
+                  cartItemIds.includes(id)
+                );
+              }}
+              className={`${classes.btn} ${
+                this.state.showButton && classes.show
+              }`}
+            >
+              {ProductCartBtn}
+            </span>
+          </Link>
+        </object>
 
-        <span
-          className={`${classes.btn} ${this.state.showButton && classes.show}`}
-        >
-          {ProductCartBtn}
-        </span>
         <p>
           {brand} {name}
         </p>
@@ -48,10 +76,4 @@ class ProductItem extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    cartItemIds: state.app.cartItemIds,
-  };
-};
-
-export default connect(mapStateToProps)(ProductItem);
+export default ProductItem;

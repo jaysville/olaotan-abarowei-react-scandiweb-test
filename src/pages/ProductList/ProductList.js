@@ -5,11 +5,12 @@ import { graphql } from "@apollo/client/react/hoc";
 import { GET_PRODUCTS } from "../../utils/queries";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { addToCart } from "../../redux/slices/appSlice";
+import { addToCart, removeFromCart } from "../../redux/slices/appSlice";
 
 class ProductList extends Component {
   render() {
-    const { data, currency, addToCart, cartItemIds } = this.props;
+    const { data, currency, addToCart, removeFromCart, cartItemIds } =
+      this.props;
 
     const { category } = data;
 
@@ -24,6 +25,7 @@ class ProductList extends Component {
                   product={product}
                   currency={currency}
                   addToCart={addToCart}
+                  removeFromCart={removeFromCart}
                   cartItemIds={cartItemIds}
                 />
               </Link>
@@ -45,6 +47,7 @@ const mapStateToProps = (state) => {
 const matchDispatchToProps = (dispatch) => {
   return {
     addToCart: (product) => dispatch(addToCart(product)),
+    removeFromCart: (id) => dispatch(removeFromCart(id)),
   };
 };
 export default connect(
