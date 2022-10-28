@@ -85,13 +85,8 @@ class Header extends Component {
                     : CurrencyArrowDown}
                 </strong>
               </span>
-              <div>
-                <span
-                  className={classes.cart}
-                  onClick={this.toggleCartDropDown.bind(this)}
-                >
-                  {EmptyCart}
-                </span>
+              <div onClick={this.toggleCartDropDown.bind(this)}>
+                <span className={classes.cart}>{EmptyCart}</span>
                 <span>{totalQuantity}</span>
               </div>
             </div>
