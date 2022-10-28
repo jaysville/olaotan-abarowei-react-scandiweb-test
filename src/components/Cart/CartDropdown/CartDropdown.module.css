@@ -19,7 +19,11 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
-
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .amount,
 .actions {
   display: flex;

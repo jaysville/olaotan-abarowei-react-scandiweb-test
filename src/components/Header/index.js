@@ -33,9 +33,6 @@ class Header extends Component {
     });
   }
 
-  componentDidUpdate() {
-    console.log(this.props);
-  }
   render() {
     const {
       categories,
@@ -71,7 +68,9 @@ class Header extends Component {
               );
             })}
           </ul>
+
           <span className={classes.bag}>{GreenBag}</span>
+
           <div style={{ display: "flex" }}>
             <div className={classes.icons}>
               <span

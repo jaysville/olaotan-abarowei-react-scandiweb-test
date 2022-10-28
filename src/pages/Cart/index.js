@@ -2,7 +2,7 @@ import { Component } from "react";
 import CartItem from "../../components/Cart/CartItem";
 import classes from "./Cart.module.css";
 import { connect } from "react-redux";
-
+import { Link } from "react-router-dom";
 class Cart extends Component {
   render() {
     let total = 0;
@@ -15,39 +15,54 @@ class Cart extends Component {
     return (
       <main className={classes.cart}>
         <h1>CART</h1>
-        {this.props.cartItems.map((item, i) => {
-          return (
-            <CartItem item={item} currency={this.props.currency} key={i} />
-          );
-        })}
-        <div className={classes.total}>
-          <table>
-            <tbody>
-              <tr>
-                <td>Tax: </td>
-                <td>
-                  {this.props.currency} {(total * 0.21).toFixed(2)}
-                </td>
-              </tr>
-              <tr>
-                <td>Quantity:</td>
-                <td>{this.props.totalQuantity}</td>
-              </tr>
-              <tr>
-                <td>Total:</td>
-                <td>
-                  {this.props.currency} {total.toFixed(2)}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button
-            onClick={() => {
-              alert("Hello Scandiweb");
-            }}
-          >
-            ORDER
-          </button>
+        <div>
+          {this.props.cartItems.length > 0 ? (
+            <div>
+              {" "}
+              {this.props.cartItems.map((item, i) => {
+                return (
+                  <CartItem
+                    item={item}
+                    currency={this.props.currency}
+                    key={i}
+                  />
+                );
+              })}
+              <div className={classes.total}>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Tax: </td>
+                      <td>
+                        {this.props.currency} {(total * 0.21).toFixed(2)}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Quantity:</td>
+                      <td>{this.props.totalQuantity}</td>
+                    </tr>
+                    <tr>
+                      <td>Total:</td>
+                      <td>
+                        {this.props.currency} {total.toFixed(2)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button
+                  onClick={() => {
+                    alert("Hello Scandiweb");
+                  }}
+                >
+                  ORDER
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className={classes["empty-cart"]}>
+              Cart is Empty :( <br /> <Link to="/">Go Shopping</Link>
+            </p>
+          )}
         </div>
       </main>
     );

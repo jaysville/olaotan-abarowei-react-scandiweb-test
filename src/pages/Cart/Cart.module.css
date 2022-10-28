@@ -41,6 +41,12 @@
   color: #ffffff;
 }
 
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20vh;
+}
 @media (max-width: 655px) {
   .cart .total button {
     width: 100%;

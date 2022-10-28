@@ -23,13 +23,23 @@ class CartDropdown extends Component {
           <p style={{ marginLeft: "1em" }}>
             <b>My Bag</b> , <em>{totalQuantity} item(s)</em>
           </p>
-          <ul>
-            {cartItems.map((item, i) => {
-              return (
-                <CartDropdownItem item={item} key={i} currency={currency} />
-              );
-            })}
-          </ul>
+          <div></div>
+          {cartItems.length > 0 ? (
+            <ul>
+              {cartItems.map((item, i) => {
+                return (
+                  <CartDropdownItem item={item} key={i} currency={currency} />
+                );
+              })}
+            </ul>
+          ) : (
+            <p className={classes["empty-cart"]}>
+              Empty Cart :( <br />{" "}
+              <Link to="/" onClick={toggleCartDropDown}>
+                Go Shopping
+              </Link>
+            </p>
+          )}
           <div>
             <div className={classes.amount}>
               <h5>Total Amount</h5>

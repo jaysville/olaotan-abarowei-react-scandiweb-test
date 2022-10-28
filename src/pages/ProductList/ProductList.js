@@ -7,10 +7,16 @@ import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/slices/appSlice";
 
 class ProductList extends Component {
+  componentDidMount() {
+    this.props.setActiveCategory("all");
+  }
+  componentWillUnmount() {
+    this.props.setActiveCategory(null);
+  }
   render() {
     const { data, currency, addToCart, removeFromCart, cartItemIds } =
       this.props;
-
+    console.log(this.props);
     const { category } = data;
 
     return (

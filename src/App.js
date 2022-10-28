@@ -30,7 +30,12 @@ class App extends Component {
           <Route
             path="/"
             exact
-            element={<ProductList activeCategory={this.state.activeCategory} />}
+            element={
+              <ProductList
+                activeCategory={this.state.activeCategory}
+                setActiveCategory={this.setActiveCategory.bind(this)}
+              />
+            }
           />
           <Route path="/item/:id" element={<ProductDetails />} />
 
