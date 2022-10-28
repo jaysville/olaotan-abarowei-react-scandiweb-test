@@ -1,7 +1,6 @@
 import { Component } from "react";
 import classes from "./ProductItem.module.css";
 import { ProductCartBtn } from "../UI/svgs";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 class ProductItem extends Component {
@@ -21,57 +20,68 @@ class ProductItem extends Component {
     if (inCart) {
       this.props.removeFromCart(id);
       this.setState({ ...this.state, addedToCart: false });
+      alert("Removed From Cart");
     } else {
       this.props.addToCart(data);
       this.setState({ ...this.state, addedToCart: true });
+      alert("Added To Cart");
     }
   }
 
   render() {
     const { product, currency, cartItemIds } = this.props;
-    const { id, name, brand, gallery, prices } = product;
+    const { id, name, brand, gallery, prices, inStock } = product;
 
     const actualPrice = prices.find(
       (price) => price.currency.symbol === currency
     );
 
     return (
-      <li
-        className={`${classes.item} ${this.state.addedToCart && classes.added}`}
-        onMouseEnter={this.showButtonHandler.bind(this)}
-        onMouseLeave={this.hideButtonHandler.bind(this)}
-      >
-        <img src={gallery[0]} alt="item" />
-        <object>
-          <Link to="#">
-            <span
-              onClick={() => {
-                this.cartItemHandler(
-                  id,
-                  {
-                    ...product,
-                    quantity: 1,
-                    selected: {},
-                  },
-                  cartItemIds.includes(id)
-                );
-              }}
-              className={`${classes.btn} ${
-                this.state.showButton && classes.show
-              }`}
-            >
-              {ProductCartBtn}
-            </span>
-          </Link>
-        </object>
+      <Link key={product.id} to={inStock ? `/item/${id}` : "#"}>
+        <li
+          className={`${classes.item} ${
+            this.state.addedToCart && classes.added
+          } ${!inStock && classes["out-of-stock"]}`}
+          onMouseEnter={this.showButtonHandler.bind(this)}
+          onMouseLeave={this.hideButtonHandler.bind(this)}
+        >
+          <img src={gallery[0]} alt="item" />
+          {!inStock && (
+            <div className={classes.fade}>
+              <p>OUT OF STOCK</p>
+            </div>
+          )}
+          <object>
+            <Link to="#">
+              <span
+                onClick={() => {
+                  this.cartItemHandler(
+                    id,
+                    {
+                      ...product,
+                      quantity: 1,
+                      selected: {},
+                    },
+                    cartItemIds.includes(id)
+                  );
+                }}
+                className={`${classes.btn} ${
+                  this.state.showButton && classes.show
+                }`}
+              >
+                {ProductCartBtn}
+              </span>
+            </Link>
+          </object>
 
-        <p>
-          {brand} {name}
-        </p>
-        <strong>
-          {currency} {actualPrice?.amount.toFixed(2).toLocaleString()}
-        </strong>
-      </li>
+          <p>
+            {brand} {name}
+          </p>
+          <strong>
+            {currency} {actualPrice?.amount.toFixed(2).toLocaleString()}
+          </strong>
+        </li>
+      </Link>
     );
   }
 }

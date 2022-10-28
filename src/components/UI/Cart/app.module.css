@@ -56,10 +56,22 @@
   margin-right: 8px;
 }
 
+.item .size .sizeChoice {
+  color: white;
+  background-color: #1d1f22;
+}
+.item .color {
+  white-space: nowrap;
+}
+.item .color .colorChoice {
+  border: 3px solid #53ce78;
+}
+
 .item .color button {
   width: 32px;
   height: 32px;
-  margin-right: 12px;
+  margin-right: 8px;
+  border: 1px solid transparent;
 }
 
 .item .actions {

@@ -24,6 +24,9 @@
   font-size: 30px;
   line-height: 27px;
   color: #1d1f22;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .item .container .first div {
   margin-top: 1.5rem;
@@ -49,17 +52,26 @@
 .item .size button {
   width: 63px;
   height: 45px;
-  border: 1px solid #1d1f22;
   background-color: white;
-  margin-right: 8px;
+  color: black;
+  margin-right: 12px;
+  border: 1px solid black;
 }
 
-.item .color button {
+.item .size .sizeChoice {
+  color: white;
+  background-color: #1d1f22;
+}
+.item .colors button {
   width: 32px;
   height: 32px;
   margin-right: 12px;
+  border: 1px solid transparent;
 }
 
+.item .colors .colorChoice {
+  border: 3px solid #53ce78;
+}
 .item .actions {
   display: flex;
   flex-direction: column;
@@ -80,6 +92,16 @@
   font-weight: 500;
   font-size: 24px;
   line-height: 160%;
+}
+
+.item .scroll {
+  position: absolute;
+  right: 3%;
+  bottom: 2%;
+}
+
+.item .scroll :first-child {
+  margin-right: 10px;
 }
 
 @media (max-width: 655px) {

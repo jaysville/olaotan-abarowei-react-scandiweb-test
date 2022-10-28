@@ -74,14 +74,43 @@
   transform: translateY(4px);
 }
 
+.icons .cart + span {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-size: 12px;
+  bottom: 35px;
+  right: -10px;
+}
+
 @media (min-width: 850px) {
   .bag {
     position: absolute;
     right: 50%;
   }
+
   .nav .categories,
   .nav .bag,
   .icons {
     transform: scale(1);
+  }
+}
+
+@media (max-width: 849px) {
+  .icons .cart + span {
+    top: 45px;
+    right: 16px;
+  }
+}
+@media (max-width: 740px) {
+  .icons .cart + span {
+    right: 10px;
   }
 }

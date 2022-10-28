@@ -3,7 +3,6 @@ import ProductItem from "../../components/Products/ProductItem";
 import classes from "./ProductList.module.css";
 import { graphql } from "@apollo/client/react/hoc";
 import { GET_PRODUCTS } from "../../utils/queries";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/slices/appSlice";
 
@@ -20,15 +19,14 @@ class ProductList extends Component {
         <ul className={classes.list}>
           {category?.products?.map((product) => {
             return (
-              <Link key={product.id} to={`/item/${product.id}`}>
-                <ProductItem
-                  product={product}
-                  currency={currency}
-                  addToCart={addToCart}
-                  removeFromCart={removeFromCart}
-                  cartItemIds={cartItemIds}
-                />
-              </Link>
+              <ProductItem
+                key={product.id}
+                product={product}
+                currency={currency}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+                cartItemIds={cartItemIds}
+              />
             );
           })}
         </ul>

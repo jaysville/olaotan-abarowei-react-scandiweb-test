@@ -5,18 +5,24 @@ import { graphql } from "@apollo/client/react/hoc";
 import { withRouter } from "../../utils/helpers";
 import { GET_PRODUCT_DETAILS } from "../../utils/queries";
 import { connect } from "react-redux";
+import { addToCart, removeFromCart } from "../../redux/slices/appSlice";
 
 class ProductDetails extends Component {
   constructor() {
     super();
-    this.state = { largeImageSrc: "" };
+    this.state = { largeImageSrc: "", colorChoice: "", sizeChoice: "" };
   }
 
   handleLargeImageSrc(src) {
-    console.log(this.state);
-    this.setState({ largeImageSrc: src });
+    this.setState({ ...this.state, largeImageSrc: src });
   }
 
+  updateColor(color) {
+    this.setState({ ...this.state, colorChoice: color });
+  }
+  updateSize(size) {
+    this.setState({ ...this.state, sizeChoice: size });
+  }
   render() {
     const { data, currency } = this.props;
     let content;
@@ -24,7 +30,6 @@ class ProductDetails extends Component {
       content = <p>Loading</p>;
     }
     if (!data.loading) {
-      console.log(data.product);
       const { name, brand, attributes, description, prices } = data.product;
       const actualPrice = prices.find(
         (price) => price.currency.symbol === currency
@@ -63,11 +68,12 @@ class ProductDetails extends Component {
               <h1>{name}</h1>
               <h5>{brand}</h5>
             </div>
-            {attributes.map((attribute) => {
+
+            {attributes.map((attribute, i) => {
               return (
-                <>
+                <div key={i}>
                   {attribute.id === "Color" && (
-                    <div className={classes.colors} key="color">
+                    <div className={classes.colors}>
                       <h2>COLOR:</h2>
                       {attribute.items.map((item, i) => {
                         return (
@@ -75,24 +81,41 @@ class ProductDetails extends Component {
                             key={i}
                             style={{
                               backgroundColor: `${item.value}`,
-                              border: "none",
                             }}
+                            onClick={this.updateColor.bind(this, item.value)}
+                            className={
+                              this.state.colorChoice === item.value
+                                ? classes.colorChoice
+                                : ""
+                            }
                           ></button>
                         );
                       })}
                     </div>
                   )}
                   {attribute.id === "Size" && (
-                    <div className={classes.size} key="size">
+                    <div className={classes.size}>
                       <h2>SIZE:</h2>
                       <div>
                         {attribute.items.map((item, i) => {
-                          return <button key={i}>{item.value}</button>;
+                          return (
+                            <button
+                              key={i}
+                              onClick={this.updateSize.bind(this, item.value)}
+                              className={
+                                this.state.sizeChoice === item.value
+                                  ? classes.sizeChoice
+                                  : ""
+                              }
+                            >
+                              {item.value}
+                            </button>
+                          );
                         })}
                       </div>
                     </div>
                   )}
-                </>
+                </div>
               );
             })}
 
@@ -102,9 +125,21 @@ class ProductDetails extends Component {
                 {currency} {actualPrice?.amount.toFixed(2)}
               </strong>
             </div>
-
             <div>
-              <button className={classes.btn}>Add To Cart</button>
+              <button
+                className={classes.btn}
+                onClick={() => {
+                  this.props.addToCart({
+                    ...data?.product,
+                    quantity: 1,
+                    sizeChoice: this.state.sizeChoice || "",
+                    colorChoice: this.state.colorChoice || "",
+                  });
+                  alert("Added To Cart");
+                }}
+              >
+                Add To Cart
+              </button>
             </div>
             <article>{parse(description)}</article>
           </div>
@@ -120,7 +155,17 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(
+const matchDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (product) => dispatch(addToCart(product)),
+    removeFromCart: (id) => dispatch(removeFromCart(id)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  matchDispatchToProps
+)(
   withRouter(
     graphql(GET_PRODUCT_DETAILS, {
       options: (props) => ({

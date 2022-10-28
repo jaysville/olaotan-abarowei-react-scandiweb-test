@@ -43,6 +43,7 @@ class Header extends Component {
       setActiveCategory,
       currency,
       changeCurrency,
+      totalQuantity,
     } = this.props;
 
     return (
@@ -85,12 +86,15 @@ class Header extends Component {
                     : CurrencyArrowDown}
                 </strong>
               </span>
-              <span
-                className={classes.cart}
-                onClick={this.toggleCartDropDown.bind(this)}
-              >
-                {EmptyCart}
-              </span>
+              <div>
+                <span
+                  className={classes.cart}
+                  onClick={this.toggleCartDropDown.bind(this)}
+                >
+                  {EmptyCart}
+                </span>
+                <span>{totalQuantity}</span>
+              </div>
             </div>
 
             {this.state.showCurrencyDropdown && (
@@ -135,6 +139,7 @@ const mapStateToProps = (state) => {
   return {
     currency: state.app.currency,
     cartCount: state.app.cartCount,
+    totalQuantity: state.app.totalQuantity,
   };
 };
 

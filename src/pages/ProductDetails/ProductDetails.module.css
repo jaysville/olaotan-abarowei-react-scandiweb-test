@@ -82,11 +82,21 @@
   border: 1px solid #1d1f22;
   background-color: white;
   margin-right: 12px;
+  cursor: pointer;
+}
+.size .sizeChoice {
+  color: white;
+  background-color: #1d1f22;
 }
 .colors button {
   width: 32px;
   height: 32px;
   margin-right: 12px;
+  border: 1px solid transparent;
+}
+
+.colors .colorChoice {
+  border: 3px solid #5ece7b;
 }
 
 .btn {
