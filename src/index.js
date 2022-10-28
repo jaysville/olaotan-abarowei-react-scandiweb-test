@@ -5,7 +5,8 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Provider } from "react-redux";
-import store from "./redux";
+import { store, persistor } from "./redux";
+import { PersistGate } from "redux-persist/lib/integration/react";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
@@ -17,9 +18,11 @@ root.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <React.StrictMode>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <PersistGate loading={null} persistor={persistor}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PersistGate>
       </React.StrictMode>
     </Provider>
   </ApolloProvider>
