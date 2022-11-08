@@ -131,6 +131,9 @@ class ProductDetails extends Component {
                 onClick={() => {
                   this.props.addToCart({
                     ...data?.product,
+                    id:
+                      data?.product.id +
+                      (this.state.colorChoice || this.state.sizeChoice),
                     quantity: 1,
                     sizeChoice: this.state.sizeChoice || "",
                     colorChoice: this.state.colorChoice || "",
