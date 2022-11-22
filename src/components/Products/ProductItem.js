@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 class ProductItem extends Component {
   constructor() {
     super();
-    this.state = { showButton: false, addedToCart: false };
+    this.state = {
+      showButton: false,
+      addedToCart: false,
+    };
   }
 
   showButtonHandler() {
@@ -30,14 +33,26 @@ class ProductItem extends Component {
 
   render() {
     const { product, currency, cartItemIds } = this.props;
-    const { id, name, brand, gallery, prices, inStock } = product;
+    const { id, name, brand, gallery, prices, inStock, attributes } = product;
 
     const actualPrice = prices.find(
       (price) => price.currency.symbol === currency
     );
 
+    let firstColor = "";
+    let firstSize = "";
+
+    if (attributes?.find((attribute) => attribute.id === "Color")) {
+      firstColor = attributes?.find((attribute) => attribute.id === "Color")
+        .items[0]?.value;
+    }
+    if (attributes?.find((attribute) => attribute.id === "Size")) {
+      firstSize = attributes?.find((attribute) => attribute.id === "Size")
+        .items[0]?.value;
+    }
+
     return (
-      <Link key={product.id} to={inStock ? `/item/${id}` : "#"}>
+      <Link key={product.id} to={`/item/${id}`}>
         <li
           className={`${classes.item} ${
             this.state.addedToCart && classes.added
@@ -55,15 +70,19 @@ class ProductItem extends Component {
             <Link to="#">
               <span
                 onClick={() => {
-                  this.cartItemHandler(
-                    id,
-                    {
-                      ...product,
-                      quantity: 1,
-                      selected: {},
-                    },
-                    cartItemIds.includes(id)
-                  );
+                  inStock
+                    ? this.cartItemHandler(
+                        id + firstColor + firstSize,
+                        {
+                          ...product,
+                          id: id + firstColor + firstSize,
+                          quantity: 1,
+                          colorChoice: firstColor,
+                          sizeChoice: firstSize,
+                        },
+                        cartItemIds.includes(id + firstColor + firstSize)
+                      )
+                    : alert("Unavailable");
                 }}
                 className={`${classes.btn} ${
                   this.state.showButton && classes.show

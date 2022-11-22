@@ -2,6 +2,8 @@ import { Component } from "react";
 import classes from "./app.module.css";
 import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "../../../redux/slices/appSlice";
+import { ColorButton } from "../../../pages/ProductDetails";
+import styled from "styled-components";
 
 class CartDropdownItem extends Component {
   render() {
@@ -25,17 +27,11 @@ class CartDropdownItem extends Component {
                     <h2>COLOR:</h2>
                     {attribute.items.map((item, i) => {
                       return (
-                        <button
+                        <ColorButton
                           key={i}
-                          style={{
-                            backgroundColor: `${item.value}`,
-                          }}
-                          className={
-                            this.props.item.colorChoice === item.value
-                              ? classes.colorChoice
-                              : ""
-                          }
-                        ></button>
+                          colorValue={item.value}
+                          selected={this.props.item.colorChoice === item.value}
+                        />
                       );
                     })}
                   </div>
@@ -76,9 +72,7 @@ class CartDropdownItem extends Component {
             >
               +
             </button>
-            <span style={{ textAlign: "center", fontWeight: 500 }}>
-              {item.quantity}
-            </span>
+            <QuantityWrapper>{item.quantity}</QuantityWrapper>
             <button
               onClick={() => {
                 this.props.removeFromCart(item.id);
@@ -101,3 +95,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 export default connect(null, mapDispatchToProps)(CartDropdownItem);
+
+export const QuantityWrapper = styled.div`
+  text-align: center;
+  font-weight: 500;
+  font-size: 24px;
+`;

@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { changeCurrency } from "../../redux/slices/appSlice";
 import { GET_CURRENCIES } from "../../utils/queries";
 import { graphql } from "@apollo/client/react/hoc";
+import styled from "styled-components";
 
 class Header extends Component {
   constructor() {
@@ -44,15 +45,15 @@ class Header extends Component {
     } = this.props;
 
     return (
-      <header>
+      <header className={classes.header}>
         <nav className={classes.nav}>
           <ul className={classes.categories}>
             {categories?.map((category, i) => {
               return (
                 <Link
                   key={i}
-                  to="/"
-                  style={{ textDecoration: "none", color: "black" }}
+                  to={`/${i === 0 ? "" : category}`}
+                  className={classes.navlink}
                   onClick={() => {
                     setActiveCategory(category);
                   }}
@@ -71,11 +72,10 @@ class Header extends Component {
 
           <span className={classes.bag}>{GreenBag}</span>
 
-          <div style={{ display: "flex" }}>
+          <IconsContainer>
             <div className={classes.icons}>
-              <span
+              <CurrencyContainer
                 onClick={this.toggleCurrencyDropdown.bind(this)}
-                style={{ marginRight: "1em" }}
               >
                 <strong>
                   {currency}
@@ -84,7 +84,7 @@ class Header extends Component {
                     ? CurrencyArrowUp
                     : CurrencyArrowDown}
                 </strong>
-              </span>
+              </CurrencyContainer>
               <div onClick={this.toggleCartDropDown.bind(this)}>
                 <span className={classes.cart}>{EmptyCart}</span>
                 <span>{totalQuantity}</span>
@@ -122,7 +122,7 @@ class Header extends Component {
                 toggleCartDropDown={this.toggleCartDropDown.bind(this)}
               />
             )}
-          </div>
+          </IconsContainer>
         </nav>
       </header>
     );
@@ -148,3 +148,12 @@ const matchDispatchToProps = (dispatch) => {
 export default graphql(GET_CURRENCIES)(
   connect(mapStateToProps, matchDispatchToProps)(Header)
 );
+
+const IconsContainer = styled.div`
+  display: flex;
+  margin-left: auto;
+`;
+
+const CurrencyContainer = styled.span`
+  margin-right: 1em;
+`;

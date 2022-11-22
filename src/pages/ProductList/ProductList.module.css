@@ -2,12 +2,12 @@
   margin-top: 3rem;
 }
 .container h3 {
-  margin-left: 2em;
+  margin-left: 0.7em;
 }
 .list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 90px;
   padding-left: 0;
 }
 

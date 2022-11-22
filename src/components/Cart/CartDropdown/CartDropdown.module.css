@@ -1,10 +1,10 @@
 .dropdown {
   width: 330px;
   max-height: 600px;
-  position: absolute;
-  right: 3%;
+  position: fixed;
+  z-index: 800;
+  right: 5%;
   top: 10%;
-  z-index: 500;
   background-color: white;
   padding-inline-start: 0;
   display: flex;
@@ -19,6 +19,10 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.dropdown > p span {
+  font-size: 16px;
+}
 .empty-cart {
   display: flex;
   flex-direction: column;
@@ -29,7 +33,9 @@
   display: flex;
   justify-content: space-between;
 }
-
+.actions a {
+  text-decoration: none;
+}
 .actions button {
   padding: 16px 32px;
   width: 140px;

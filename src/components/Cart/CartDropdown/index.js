@@ -20,8 +20,8 @@ class CartDropdown extends Component {
       <>
         <Backdrop onClick={toggleCartDropDown} />
         <div className={classes.dropdown}>
-          <p style={{ marginLeft: "1em" }}>
-            <b>My Bag</b> , <em>{totalQuantity} item(s)</em>
+          <p>
+            <b>My Bag</b> , <span>{totalQuantity} items</span>
           </p>
           <div></div>
           {cartItems.length > 0 ? (
@@ -42,17 +42,13 @@ class CartDropdown extends Component {
           )}
           <div>
             <div className={classes.amount}>
-              <h5>Total Amount</h5>
+              <h5>Total </h5>
               <h5>
                 {currency} {total.toFixed(2)}
               </h5>
             </div>
             <div className={classes.actions}>
-              <Link
-                to="/cart"
-                style={{ textDecoration: "none" }}
-                onClick={toggleCartDropDown}
-              >
+              <Link to="/cart" onClick={toggleCartDropDown}>
                 <button>View Bag</button>
               </Link>
 

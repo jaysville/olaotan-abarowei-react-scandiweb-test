@@ -2,6 +2,9 @@ import { Component } from "react";
 import classes from "./CartItem.module.css";
 import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/slices/appSlice";
+import { QuantityWrapper } from "../UI/Cart/CartDropdownItem";
+import { ColorButton } from "../../pages/ProductDetails";
+import styled from "styled-components";
 
 class CartItem extends Component {
   constructor() {
@@ -38,15 +41,11 @@ class CartItem extends Component {
                         <h2>COLOR:</h2>
                         {attribute.items.map((item, i) => {
                           return (
-                            <button
+                            <ColorButton
                               key={i}
-                              style={{
-                                backgroundColor: `${item.value}`,
-                              }}
-                              className={
+                              colorValue={item.value}
+                              selected={
                                 this.props.item.colorChoice === item.value
-                                  ? classes.colorChoice
-                                  : ""
                               }
                             />
                           );
@@ -90,9 +89,7 @@ class CartItem extends Component {
               >
                 +
               </button>
-              <span style={{ textAlign: "center", fontWeight: 500 }}>
-                {item.quantity}
-              </span>
+              <QuantityWrapper>{item.quantity}</QuantityWrapper>
               <button
                 onClick={() => {
                   this.props.removeFromCart(item.id);
@@ -101,7 +98,7 @@ class CartItem extends Component {
                 -
               </button>
             </div>
-            <div style={{ position: "relative" }}>
+            <Carousel>
               <img
                 src={this.state.displayImage || item.gallery[0]}
                 alt="poster"
@@ -155,7 +152,7 @@ class CartItem extends Component {
                   </svg>
                 </div>
               )}
-            </div>
+            </Carousel>
           </div>
         </div>
       </li>
@@ -170,3 +167,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 export default connect(null, mapDispatchToProps)(CartItem);
+
+const Carousel = styled.div`
+  position: relative;
+`;

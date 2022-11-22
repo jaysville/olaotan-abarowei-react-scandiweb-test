@@ -6,15 +6,36 @@ import { withRouter } from "../../utils/helpers";
 import { GET_PRODUCT_DETAILS } from "../../utils/queries";
 import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/slices/appSlice";
+import styled from "styled-components";
 
 class ProductDetails extends Component {
   constructor() {
     super();
-    this.state = { largeImageSrc: "", colorChoice: "", sizeChoice: "" };
+    this.state = {
+      largeImageSrc: "",
+      colorChoice: "",
+      sizeChoice: "",
+      hasAttributes: false,
+    };
   }
 
   handleLargeImageSrc(src) {
     this.setState({ ...this.state, largeImageSrc: src });
+  }
+
+  cartItemHandler(data, hasAttributes) {
+    if (!hasAttributes) {
+      this.props.addToCart(data);
+      alert("Added To Cart");
+    } else if (
+      hasAttributes &&
+      (this.state.colorChoice !== "" || this.state.sizeChoice !== "")
+    ) {
+      this.props.addToCart(data);
+      alert("Added To Cart");
+    } else {
+      alert("Please select attributes (size or color)");
+    }
   }
 
   updateColor(color) {
@@ -25,15 +46,30 @@ class ProductDetails extends Component {
   }
   render() {
     const { data, currency } = this.props;
+
     let content;
+    let hasAttributes;
+
     if (data.loading) {
       content = <p>Loading</p>;
     }
     if (!data.loading) {
-      const { name, brand, attributes, description, prices } = data.product;
+      const { name, brand, attributes, description, prices, inStock } =
+        data.product;
       const actualPrice = prices.find(
         (price) => price.currency.symbol === currency
       );
+
+      const colorAttr = attributes?.find(
+        (attribute) => attribute.id === "Color"
+      );
+      const sizeAttr = attributes?.find((attribute) => attribute.id === "Size");
+
+      if (colorAttr || sizeAttr) {
+        hasAttributes = true;
+      } else {
+        hasAttributes = false;
+      }
 
       content = (
         <div className={classes.container}>
@@ -77,18 +113,12 @@ class ProductDetails extends Component {
                       <h2>COLOR:</h2>
                       {attribute.items.map((item, i) => {
                         return (
-                          <button
+                          <ColorButton
                             key={i}
-                            style={{
-                              backgroundColor: `${item.value}`,
-                            }}
+                            colorValue={item.value}
                             onClick={this.updateColor.bind(this, item.value)}
-                            className={
-                              this.state.colorChoice === item.value
-                                ? classes.colorChoice
-                                : ""
-                            }
-                          ></button>
+                            selected={this.state.colorChoice === item.value}
+                          />
                         );
                       })}
                     </div>
@@ -127,21 +157,26 @@ class ProductDetails extends Component {
             </div>
             <div>
               <button
-                className={classes.btn}
+                className={`${classes.btn} ${
+                  !inStock && classes["out-of-stock"]
+                }`}
+                disabled={!inStock}
                 onClick={() => {
-                  this.props.addToCart({
-                    ...data?.product,
-                    id:
-                      data?.product.id +
-                      (this.state.colorChoice || this.state.sizeChoice),
-                    quantity: 1,
-                    sizeChoice: this.state.sizeChoice || "",
-                    colorChoice: this.state.colorChoice || "",
-                  });
-                  alert("Added To Cart");
+                  this.cartItemHandler(
+                    {
+                      ...data?.product,
+                      id:
+                        data?.product.id +
+                        (this.state.colorChoice || this.state.sizeChoice),
+                      quantity: 1,
+                      sizeChoice: this.state.sizeChoice,
+                      colorChoice: this.state.colorChoice,
+                    },
+                    hasAttributes
+                  );
                 }}
               >
-                Add To Cart
+                {inStock ? "Add To Cart" : "Out Of Stock"}
               </button>
             </div>
             <article>{parse(description)}</article>
@@ -179,3 +214,9 @@ export default connect(
     })(ProductDetails)
   )
 );
+
+export const ColorButton = styled.button`
+  background-color: ${(props) => props.colorValue};
+  border: ${(props) =>
+    props.selected ? " 3px solid #5ece7b" : "1px solid black"};
+`;

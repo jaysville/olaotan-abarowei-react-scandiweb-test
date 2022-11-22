@@ -8,20 +8,23 @@ import { addToCart, removeFromCart } from "../../redux/slices/appSlice";
 
 class ProductList extends Component {
   componentDidMount() {
-    this.props.setActiveCategory("all");
+    this.props.setActiveCategory(this.props.categoryName);
   }
-  componentWillUnmount() {
-    this.props.setActiveCategory(null);
+  componentDidUpdate(prevProps) {
+    if (prevProps.categoryName !== this.props.categoryName) {
+      this.props.setActiveCategory(this.props.categoryName);
+    }
   }
   render() {
     const { data, currency, addToCart, removeFromCart, cartItemIds } =
       this.props;
-    console.log(this.props);
     const { category } = data;
 
     return (
       <main className={classes.container}>
-        <h3>{category?.name.toUpperCase()}</h3>
+        <h3>{`${category?.name.slice(0, 1).toUpperCase()}${category?.name.slice(
+          1
+        )}`}</h3>
         <ul className={classes.list}>
           {category?.products?.map((product) => {
             return (
@@ -61,7 +64,7 @@ export default connect(
   graphql(GET_PRODUCTS, {
     options: (props) => ({
       variables: {
-        input: { title: props.activeCategory },
+        input: { title: props.categoryName },
       },
     }),
   })(ProductList)

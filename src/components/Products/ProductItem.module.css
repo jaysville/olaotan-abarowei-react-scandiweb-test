@@ -1,7 +1,7 @@
 .item {
   display: inline-block;
   color: #1d1f22;
-  width: 350px;
+  width: 386px;
   padding: 20px;
   background-color: white;
   position: relative;
@@ -11,7 +11,6 @@
 
 .item img {
   width: 334px;
-  height: 300px;
 }
 
 .item .fade {
@@ -19,7 +18,7 @@
   height: 300px;
   position: absolute;
   background-color: rgba(255, 255, 255, 0.5);
-  top: 10%;
+  top: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,10 +60,6 @@
 }
 .added object span {
   display: block;
-}
-
-.out-of-stock {
-  pointer-events: none;
 }
 
 .out-of-stock p {
