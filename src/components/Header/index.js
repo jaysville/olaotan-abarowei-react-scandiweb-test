@@ -87,7 +87,7 @@ class Header extends Component {
               </CurrencyContainer>
               <div onClick={this.toggleCartDropDown.bind(this)}>
                 <span className={classes.cart}>{EmptyCart}</span>
-                <span>{totalQuantity}</span>
+                <Badge>{totalQuantity}</Badge>
               </div>
             </div>
 
@@ -156,4 +156,20 @@ const IconsContainer = styled.div`
 
 const CurrencyContainer = styled.span`
   margin-right: 1em;
+`;
+
+const Badge = styled.div`
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  bottom: 15px;
+  right: -10px;
 `;

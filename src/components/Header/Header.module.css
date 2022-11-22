@@ -83,22 +83,6 @@
   transform: translateY(4px);
 }
 
-.icons .cart + span {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background-color: black;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  font-size: 12px;
-  bottom: 15px;
-  right: -10px;
-}
-
 @media (min-width: 850px) {
   .bag {
     position: absolute;
