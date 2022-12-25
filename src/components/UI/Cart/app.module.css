@@ -43,11 +43,13 @@
   line-height: 18px;
   color: #1d1f22;
 }
-.item .size div {
+.item .size div,
+.item .capacity div {
   display: flex;
 }
 
-.item .size button {
+.item .size button,
+.item .capacity button {
   width: 24px;
   height: 24px;
   border: 1px solid #1d1f22;
@@ -58,7 +60,13 @@
   align-items: center;
 }
 
-.item .size .sizeChoice {
+.item .capacity button {
+  width: 50px;
+  height: 30px;
+}
+
+.item .size .sizeChoice,
+.item .capacity .sizeChoice {
   color: white;
   background-color: #1d1f22;
 }
@@ -86,6 +94,7 @@
   background-color: white;
   border: 1px solid;
   font-size: 20px;
+  cursor: pointer;
 }
 .item .actions span {
   font-family: "Raleway";

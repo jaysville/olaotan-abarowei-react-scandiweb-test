@@ -41,6 +41,7 @@ class ProductItem extends Component {
 
     let firstColor = "";
     let firstSize = "";
+    let firstUSBChoice = "";
 
     if (attributes?.find((attribute) => attribute.id === "Color")) {
       firstColor = attributes?.find((attribute) => attribute.id === "Color")
@@ -49,6 +50,11 @@ class ProductItem extends Component {
     if (attributes?.find((attribute) => attribute.id === "Size")) {
       firstSize = attributes?.find((attribute) => attribute.id === "Size")
         .items[0]?.value;
+    }
+    if (attributes?.find((attribute) => attribute.id === "With USB 3 ports")) {
+      firstUSBChoice = attributes?.find(
+        (attribute) => attribute.id === "With USB 3 ports"
+      ).items[0]?.value;
     }
 
     return (
@@ -75,12 +81,15 @@ class ProductItem extends Component {
                         id + firstColor + firstSize,
                         {
                           ...product,
-                          id: id + firstColor + firstSize,
+                          id: id + firstColor + firstSize + firstUSBChoice,
                           quantity: 1,
                           colorChoice: firstColor,
                           sizeChoice: firstSize,
+                          usbChoice: firstUSBChoice,
                         },
-                        cartItemIds.includes(id + firstColor + firstSize)
+                        cartItemIds.includes(
+                          id + firstColor + firstSize + firstUSBChoice
+                        )
                       )
                     : alert("Unavailable");
                 }}

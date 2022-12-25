@@ -15,6 +15,7 @@ class ProductDetails extends Component {
       largeImageSrc: "",
       colorChoice: "",
       sizeChoice: "",
+      usbChoice: "",
       hasAttributes: false,
     };
   }
@@ -29,12 +30,14 @@ class ProductDetails extends Component {
       alert("Added To Cart");
     } else if (
       hasAttributes &&
-      (this.state.colorChoice !== "" || this.state.sizeChoice !== "")
+      (this.state.colorChoice !== "" ||
+        this.state.sizeChoice !== "" ||
+        this.state.usbChoice !== "")
     ) {
       this.props.addToCart(data);
       alert("Added To Cart");
     } else {
-      alert("Please select attributes (size or color)");
+      alert("Please select attributes (size or color or usb)");
     }
   }
 
@@ -43,6 +46,9 @@ class ProductDetails extends Component {
   }
   updateSize(size) {
     this.setState({ ...this.state, sizeChoice: size });
+  }
+  updateUSB(usb) {
+    this.setState({ ...this.state, usbChoice: usb });
   }
   render() {
     const { data, currency } = this.props;
@@ -65,7 +71,11 @@ class ProductDetails extends Component {
       );
       const sizeAttr = attributes?.find((attribute) => attribute.id === "Size");
 
-      if (colorAttr || sizeAttr) {
+      const usbAttr = attributes?.find(
+        (attribute) => attribute.id === "With USB 3 ports"
+      );
+
+      if (colorAttr || sizeAttr || usbAttr) {
         hasAttributes = true;
       } else {
         hasAttributes = false;
@@ -118,6 +128,7 @@ class ProductDetails extends Component {
                             colorValue={item.value}
                             onClick={this.updateColor.bind(this, item.value)}
                             selected={this.state.colorChoice === item.value}
+                            picker={true}
                           />
                         );
                       })}
@@ -134,6 +145,28 @@ class ProductDetails extends Component {
                               onClick={this.updateSize.bind(this, item.value)}
                               className={
                                 this.state.sizeChoice === item.value
+                                  ? classes.sizeChoice
+                                  : ""
+                              }
+                            >
+                              {item.value}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {attribute.id === "With USB 3 ports" && (
+                    <div className={classes.size}>
+                      <h2>With USB 3 ports: </h2>
+                      <div>
+                        {attribute.items.map((item, i) => {
+                          return (
+                            <button
+                              key={i}
+                              onClick={this.updateUSB.bind(this, item.value)}
+                              className={
+                                this.state.usbChoice === item.value
                                   ? classes.sizeChoice
                                   : ""
                               }
@@ -167,10 +200,13 @@ class ProductDetails extends Component {
                       ...data?.product,
                       id:
                         data?.product.id +
-                        (this.state.colorChoice || this.state.sizeChoice),
+                        (this.state.colorChoice ||
+                          this.state.sizeChoice ||
+                          this.state.usbChoice),
                       quantity: 1,
                       sizeChoice: this.state.sizeChoice,
                       colorChoice: this.state.colorChoice,
+                      usbChoice: this.state.usbChoice,
                     },
                     hasAttributes
                   );
@@ -219,4 +255,5 @@ export const ColorButton = styled.button`
   background-color: ${(props) => props.colorValue};
   border: ${(props) =>
     props.selected ? " 3px solid #5ece7b" : "1px solid black"};
+  cursor: ${(props) => props.picker && "pointer"};
 `;

@@ -21,7 +21,10 @@ class CartDropdown extends Component {
         <Backdrop onClick={toggleCartDropDown} />
         <div className={classes.dropdown}>
           <p>
-            My Bag , <span>{totalQuantity} items</span>
+            My Bag ,{" "}
+            <span>
+              {totalQuantity} item{totalQuantity > 1 && "s"}
+            </span>
           </p>
           <div></div>
           {cartItems.length > 0 ? (

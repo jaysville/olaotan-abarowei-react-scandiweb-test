@@ -87,7 +87,7 @@ class Header extends Component {
               </CurrencyContainer>
               <div onClick={this.toggleCartDropDown.bind(this)}>
                 <span className={classes.cart}>{EmptyCart}</span>
-                <Badge>{totalQuantity}</Badge>
+                {totalQuantity > 0 && <Badge>{totalQuantity}</Badge>}
               </div>
             </div>
 

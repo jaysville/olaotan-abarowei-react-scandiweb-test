@@ -73,6 +73,28 @@ class CartItem extends Component {
                         </div>
                       </div>
                     )}
+
+                    {attribute.id === "With USB 3 ports" && (
+                      <div className={classes.size}>
+                        <h2>With USB 3 ports: </h2>
+                        <div>
+                          {attribute.items.map((item, i) => {
+                            return (
+                              <button
+                                key={i}
+                                className={
+                                  this.props.item.usbChoice === item.value
+                                    ? classes.sizeChoice
+                                    : ""
+                                }
+                              >
+                                {item.value}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
